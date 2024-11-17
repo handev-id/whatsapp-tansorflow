@@ -8,10 +8,13 @@ import path from "path";
 import { Boom } from "@hapi/boom";
 import qrcode from "qrcode-terminal";
 import { writeFile } from "fs/promises";
+import face from "./modules/face";
+import { send } from "process";
 
 const UPLOADS_FOLDER = path.join(__dirname, "../uploads");
 
 fs.ensureDirSync(UPLOADS_FOLDER);
+face.boot();
 
 async function connectToWhatsapp() {
   const { state, saveCreds } = await useMultiFileAuthState("auth-whatsapp");
@@ -60,7 +63,17 @@ async function connectToWhatsapp() {
       if (message.message?.imageMessage) {
         const buffer = await downloadMediaMessage(message, "buffer", {});
 
+        const descriptor = await face.describe(buffer);
+
+        if (!descriptor) {
+          console.log(descriptor);
+          await sock.sendMessage(sender!, { text: "Wajah tidak ditemukan!" });
+        }
+
         await writeFile("file/" + sender + ".jpeg", buffer);
+        await sock.sendMessage(sender!, {
+          text: JSON.stringify({ ...descriptor }),
+        });
       }
       if (message.message?.conversation) {
         console.log("PESAN: " + message.message?.conversation);

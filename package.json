@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpileOnly src/index.ts"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +11,9 @@
   "description": "",
   "dependencies": {
     "@hapi/boom": "^10.0.1",
+    "@tensorflow/tfjs-node": "^4.22.0",
     "@types/qrcode-terminal": "^0.12.2",
+    "@vladmandic/face-api": "^1.7.14",
     "@whiskeysockets/baileys": "^6.7.9",
     "fs-extra": "^11.2.0",
     "path": "^0.12.7",
